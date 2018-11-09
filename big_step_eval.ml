@@ -45,6 +45,15 @@ let rec evaluate (envmnt : env) (e : expr) = (
 					| RRaise -> RRaise (* BS-IfRaise *)
 			)
 		)
+		(* Application rules *)
+		| App(e1, e2) -> let e1' = evaluate envmnt e1 in
+							let e2' = evaluate envmnt e2 in (
+								match(e1', e2') with
+									  (Vclos(x, e', envmnt'), v) -> evaluate ((x, v)::envmnt') e'
+									| (Vrclos(f, x, e', envmnt'), v) -> evaluate ((x, v)::(f, Vrclos(f, x, e', envmnt'))::envmnt') e'
+									| (RRaise, _) -> RRaise
+									| (_, RRaise) -> RRaise
+							)
 		(* BS-Fn *)
 		| Lam(x, e1) -> Vclos(x, e1, envmnt)
 		(* BS-Let *)
@@ -53,6 +62,8 @@ let rec evaluate (envmnt : env) (e : expr) = (
 									  RRaise -> RRaise
 									| _ -> evaluate ((x, e1')::envmnt) e2
 							)
+		(* BS-LetRec *)
+		| Lrec(f, x, e1, e2) -> let rclos = Vrclos(f, x, e1, envmnt) in evaluate ((f, rclos)::envmnt) e2
 		(*List extension rules *)
 		| Nil -> Vnil
 		| Cons(e1, e2) -> (
