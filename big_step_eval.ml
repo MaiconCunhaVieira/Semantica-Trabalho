@@ -26,6 +26,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 						| (Ge, Vnum n1, Vnum n2) -> Vbool(n1 >= n2)
 						| (_, RRaise, _) -> RRaise
 						| (_, _, RRaise) -> RRaise
+						| (_, _, _) -> RRaise
 				)
 		)
 		(* BS-UnOp *)
@@ -34,6 +35,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 				match(op, e1') with
 					  (Not, Vbool b1) -> Vbool(not b1)
 					| (_, RRaise) -> RRaise
+					| (_, _) -> RRaise
 			)
 		)
 		(* If rules *)
@@ -43,6 +45,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 					(Vbool true) -> evaluate envmnt e2 (* BS-IfTr *)
 					| (Vbool false) -> evaluate envmnt e3 (* BS-IfFls *)
 					| RRaise -> RRaise (* BS-IfRaise *)
+					| _ -> RRaise
 			)
 		)
 		(* Application rules *)
@@ -53,6 +56,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 									| (Vrclos(f, x, e', envmnt'), v) -> evaluate ((x, v)::(f, Vrclos(f, x, e', envmnt'))::envmnt') e'
 									| (RRaise, _) -> RRaise
 									| (_, RRaise) -> RRaise
+									| (_, _) -> RRaise
 							)
 		(* BS-Fn *)
 		| Lam(x, e1) -> Vclos(x, e1, envmnt)
@@ -81,6 +85,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 				  Vcons(v1, v2) -> v1
 				| Vnil -> RRaise
 				| RRaise -> RRaise
+				| _ -> RRaise
 			)
 		)
 		| Tl(e1) -> (
@@ -89,6 +94,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 				  Vcons(v1, v2) -> v2
 				| Vnil -> RRaise
 				| RRaise -> RRaise
+				| _ -> RRaise
 			)
 		)
 		| IsEmpty(e1) -> (
@@ -97,6 +103,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 				  Vcons(v1, v2) -> (Vbool false)
 				| Vnil -> (Vbool true)
 				| RRaise -> RRaise
+				| _ -> RRaise
 			)
 		)
 		(* Exceptions extension rules *)
@@ -108,4 +115,5 @@ let rec evaluate (envmnt : env) (e : expr) = (
 					| _ -> e1'
 			)
 		)
+		| _ -> RRaise
 )
