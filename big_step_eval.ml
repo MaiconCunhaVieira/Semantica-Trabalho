@@ -32,7 +32,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 		| Unop(op, e1) -> (
 			let e1' = evaluate envmnt e1 in (
 				match(op, e1') with
-					  (Not, Vbool b1) -> Vbool(not e1)
+					  (Not, Vbool b1) -> Vbool(not b1)
 					| (_, RRaise) -> RRaise
 			)
 		)
@@ -68,7 +68,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 		| Nil -> Vnil
 		| Cons(e1, e2) -> (
 			let e1' = evaluate envmnt e1 in
-				let e2' evaluate envmnt e2 in (
+				let e2' = evaluate envmnt e2 in (
 					match(e1', e2') with
 						  (RRaise, _) -> RRaise
 						| (_, RRaise) -> RRaise
