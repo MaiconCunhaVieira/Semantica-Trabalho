@@ -38,6 +38,16 @@ let rec evaluate (envmnt : env) (e : expr) = (
 					| (_, _) -> RRaise
 			)
 		)
+		(* Pair rules *)
+		| Pair(e1, e2) -> (
+			let e1' = evaluate envmnt e1 in
+				let e2' = evaluate envmnt e2 in (
+					match(e1',e2') with
+						  (RRaise, _) -> RRaise
+						| (_ RRaise) -> RRaise
+						| (_, _) -> Vpair(e1', e2')
+				)
+		)
 		(* If rules *)
 		| If(e1, e2, e3) -> ( 
 			let e1' = evaluate envmnt e1 in (
