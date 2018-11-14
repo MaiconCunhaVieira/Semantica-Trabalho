@@ -62,11 +62,8 @@ let rec evaluate (envmnt : env) (e : expr) = (
 		| Var(x) -> let rec search_env (envmnt : env) (x : variable) = (
 						match(envmnt) with
 							 [] -> RRaise
-							| _ -> let first_elem = List.hd envmnt in (
-										match(first_elem) with
-											(var, res) when var = x -> res
-											| _ -> let rest_env = List.tl envmnt in search_env rest_env x
-									)
+							| (var, res)::rest_env when var = x -> res
+							| _ -> let rest_env = List.tl envmnt in search_env rest_env x
 					) in search_env envmnt x
 		(* Application rules *)
 		| App(e1, e2) -> let e1' = evaluate envmnt e1 in
