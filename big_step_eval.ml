@@ -44,7 +44,7 @@ let rec evaluate (envmnt : env) (e : expr) = (
 				let e2' = evaluate envmnt e2 in (
 					match(e1',e2') with
 						  (RRaise, _) -> RRaise
-						| (_ RRaise) -> RRaise
+						| (_, RRaise) -> RRaise
 						| (_, _) -> Vpair(e1', e2')
 				)
 		)
