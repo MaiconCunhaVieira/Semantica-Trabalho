@@ -9,7 +9,7 @@ let rec get_constraints (envmnt : env) (e : expr) = (
 	match(e) with
 		  Ncte(n) -> (TyInt, [])
 		| Bcte(b) -> (TyBool, [])
-		| Binop(op, e1, e2) -> match(op) with (
+		| Binop(op, e1, e2) -> ( match(op) with
 			  Sum -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
 						let (typeE2, constraintE2) = get_constraints envmnt e2 in
 							let newConstraint = [(typeE1, TyInt), (typeE2, TyInt)] in
@@ -27,7 +27,7 @@ let rec get_constraints (envmnt : env) (e : expr) = (
 							let newConstraint = [(typeE1, TyInt), (typeE2, TyInt)] in
 								(TyInt, List.concat[newConstraint; constraintE1; constraintE2])
 		)
-		| Unop(op, e1) -> match(op) with (
+		| Unop(op, e1) -> ( match(op) with
 			  Not -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
 						let newConstraint = [(typeE1, TyBool)] in
 							(TyBool, List.concat[newConstraint; constraintE1])
