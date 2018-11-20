@@ -38,10 +38,10 @@ let rec get_constraints (envmnt : env) (e : expr) = (
 		| If(e1, e2, e3) -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
 								let (typeE2, constraintE2) = get_constraints envmnt e2 in
 									let (typeE3, constraintE3) = get_constraints envmnt e3 in
-										let newConstraint = [(typeE1, TyBool); (typeE2, typeE3)] in
+										let newConstraint = [(typeE1, TyBool), (typeE2, typeE3)] in
 											(typeE2, List.concat[newConstraint; constraintE1; constraintE2; constraintE3])
 		| Try(e1, e2) -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
 							let (typeE2, constraintE2) = get_constraints envmnt e2 in
 								let newConstraint = [(typeE1, typeE2)] in
-									(typeE1, List.concat[newConstraint, constraintE1, constraintE2])
+									(typeE1, List.concat[newConstraint; constraintE1; constraintE2])
 )
