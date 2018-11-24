@@ -29,6 +29,38 @@ let rec get_constraints (envmnt : env) (e : expr) = (
 						let (typeE2, constraintE2) = get_constraints envmnt e2 in
 							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
 								(TyInt, List.concat[newConstraint; constraintE1; constraintE2])
+			| And -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyBool); (typeE2, TyBool)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Or -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyBool); (typeE2, TyBool)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Eq -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Df -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Lt -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Le -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Gt -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
+			| Ge -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
+						let (typeE2, constraintE2) = get_constraints envmnt e2 in
+							let newConstraint = [(typeE1, TyInt); (typeE2, TyInt)] in
+								(TyBool, List.concat[newConstraint; constraintE1; constraintE2])
 		)
 		| Unop(op, e1) -> ( match(op) with
 			  Not -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
