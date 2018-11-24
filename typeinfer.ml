@@ -5,6 +5,9 @@ exception TypeNotFound of string
 
 type tipo = TyInt | TyBool | TyFn of tipo * tipo | TyList of tipo | TyId of string | TyPair of tipo * tipo
 
+let count = ref (-1);;
+let newVar (c : int ref) = begin incr c; "X" ^ string_of_int (!c) end
+
 let rec get_constraints (envmnt : env) (e : expr) = (
 	match(e) with
 		  Ncte(n) -> (TyInt, [])
