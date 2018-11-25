@@ -69,7 +69,7 @@ let rec get_constraints (envmnt : env) (e : expr) = (
 		)
 		| Pair(e1, e2) -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
 							let (typeE2, constraintE2) = get_constraints envmnt e2 in
-								(TyPair(typeE1, typeE2), List.concat[constraintE1, constraintE2])
+								(TyPair(typeE1, typeE2), List.concat[constraintE1; constraintE2])
 		| If(e1, e2, e3) -> let (typeE1, constraintE1) = get_constraints envmnt e1 in
 								let (typeE2, constraintE2) = get_constraints envmnt e2 in
 									let (typeE3, constraintE3) = get_constraints envmnt e3 in
